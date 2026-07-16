@@ -11,6 +11,9 @@
 #define TFT_RST P1_IO1
 #define TFT_DC  P1_IO2
 
+#ifndef FSPI
+#define FSPI 0
+#endif
 SPIClass       mySPI(FSPI);
 Adafruit_ST7735 tft = Adafruit_ST7735(&mySPI, TFT_CS, TFT_DC, TFT_RST);
 GFXcanvas16    canvas(160, 80);
@@ -34,7 +37,6 @@ int32_t pngRead(PNGFILE* /*handle*/, uint8_t* buf, int32_t len) {
 int32_t pngSeek(PNGFILE* /*handle*/, int32_t pos) {
   return pngFile.seek(pos) ? pos : -1;
 }
-// Draw one decoded row into canvas; swap R↔B for BGR panel
 void pngDraw(PNGDRAW* pDraw) {
   uint16_t line[160];
   png.getLineAsRGB565(pDraw, line, PNG_RGB565_LITTLE_ENDIAN, 0xffffffff);
