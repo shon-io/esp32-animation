@@ -11,8 +11,7 @@
 #define TFT_RST P1_IO1
 #define TFT_DC  P1_IO2
 
-SPIClass       mySPI;
-Adafruit_ST7735 tft = Adafruit_ST7735(&mySPI, TFT_CS, TFT_DC, TFT_RST);
+Adafruit_ST7735 tft = Adafruit_ST7735(&SPI, TFT_CS, TFT_DC, TFT_RST);
 GFXcanvas16    canvas(160, 80);
 
 // ── PNG decoder ───────────────────────────────────────────
@@ -209,7 +208,7 @@ void handleStatus() {
 void setup() {
   Serial.begin(115200);
 
-  mySPI.begin(SCK, MISO, MOSI);
+  SPI.begin(SCK, MISO, MOSI);
   tft.initR(INITR_MINI160x80);
   tft.setRotation(3);
   showStatus("Starting...");
