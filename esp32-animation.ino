@@ -51,8 +51,8 @@ void pngDraw(PNGDRAW* pDraw) {
 }
 
 // ── WiFi / web server ─────────────────────────────────────
-const char* ssid     = "%%WIFI_SSID%%";
-const char* password = "%%WIFI_PASSWORD%%";
+const char* ssid     = "ATTWWmXiea";
+const char* password = "657520FD6E2EC7C2FF489FFABADFF8FBBF5327C99C1E58A2475890E2BD1BD379";
 WebServer server(80);
 
 // ── Animation state ───────────────────────────────────────
