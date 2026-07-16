@@ -11,10 +11,7 @@
 #define TFT_RST P1_IO1
 #define TFT_DC  P1_IO2
 
-#ifndef FSPI
-#define FSPI 0
-#endif
-SPIClass       mySPI(FSPI);
+SPIClass       mySPI;
 Adafruit_ST7735 tft = Adafruit_ST7735(&mySPI, TFT_CS, TFT_DC, TFT_RST);
 GFXcanvas16    canvas(160, 80);
 
@@ -37,6 +34,7 @@ int32_t pngRead(PNGFILE* /*handle*/, uint8_t* buf, int32_t len) {
 int32_t pngSeek(PNGFILE* /*handle*/, int32_t pos) {
   return pngFile.seek(pos) ? pos : -1;
 }
+// Draw one decoded row into canvas; swap R↔B for BGR panel
 void pngDraw(PNGDRAW* pDraw) {
   uint16_t line[160];
   png.getLineAsRGB565(pDraw, line, PNG_RGB565_LITTLE_ENDIAN, 0xffffffff);
@@ -53,8 +51,8 @@ void pngDraw(PNGDRAW* pDraw) {
 }
 
 // ── WiFi / web server ─────────────────────────────────────
-const char* ssid     = "ATTWWmXiea";
-const char* password = "657520FD6E2EC7C2FF489FFABADFF8FBBF5327C99C1E58A2475890E2BD1BD379";
+const char* ssid     = "%%WIFI_SSID%%";
+const char* password = "%%WIFI_PASSWORD%%";
 WebServer server(80);
 
 // ── Animation state ───────────────────────────────────────
@@ -115,13 +113,13 @@ input[type=file]{display:block;margin:12px 0;width:100%;color:#ccc}
 #status{margin-top:14px;padding:10px;background:#1a1a1a;border-radius:6px;font-size:.9em;color:#8f8}
 </style></head><body>
 <h2>PNG Animation Loader</h2>
-<p>Upload 160x80 px PNG frames named <b>frame000.png, frame001.png, ...</b></p>
+<p>Upload 160×80 px PNG frames named <b>frame000.png, frame001.png, …</b></p>
 <input type='file' id='files' accept='.png' multiple>
-<button class='up' onclick='uploadAll()'>Upload Frames</button>
+<button class='up' onclick='uploadAll()'>⬆ Upload Frames</button>
 <hr style='border-color:#333;margin:16px 0'>
-<button class='play' onclick='cmd("play")'>Play</button>
-<button class='stop' onclick='cmd("stop")'>Stop</button>
-<button class='clr'  onclick='cmd("clear")'>Clear All</button>
+<button class='play' onclick='cmd("play")'>▶ Play</button>
+<button class='stop' onclick='cmd("stop")'>■ Stop</button>
+<button class='clr'  onclick='cmd("clear")'>🗑 Clear All</button>
 <div id='status'>Ready.</div>
 <script>
 async function uploadAll(){
